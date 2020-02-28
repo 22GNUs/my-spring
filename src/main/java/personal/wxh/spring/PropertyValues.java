@@ -16,8 +16,12 @@ public class PropertyValues {
   /** 保存所有注入的属性 */
   private final List<PropertyValue> propertyValues;
 
+  public PropertyValues(List<PropertyValue> propertyValues) {
+    this.propertyValues = propertyValues;
+  }
+
   public PropertyValues() {
-    this.propertyValues = new ArrayList<>();
+    this(new ArrayList<>());
   }
 
   public PropertyValues(PropertyValue... pvs) {

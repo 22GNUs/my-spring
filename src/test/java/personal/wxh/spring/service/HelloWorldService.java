@@ -1,4 +1,4 @@
-package personal.wxh.spring;
+package personal.wxh.spring.service;
 
 /**
  * @author wangxinhua

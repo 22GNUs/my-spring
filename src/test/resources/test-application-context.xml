@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean name="xmlService" class="personal.wxh.spring.service.XmlAutowiredService">
+        <property name="text" value="Im autowired by xml" />
+    </bean>
+</beans>
