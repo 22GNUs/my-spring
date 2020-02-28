@@ -11,6 +11,9 @@ public class BeanDefinition<T> {
   /** bean对象, 在BeanFactory中初始化 */
   private T bean;
 
+  /** 依赖属性 */
+  private PropertyValues propertyValues;
+
   /** bean对应的class对象 */
   private final Class<T> beanClass;
 
@@ -30,6 +33,11 @@ public class BeanDefinition<T> {
     }
   }
 
+  public BeanDefinition(String className, PropertyValues propertyValues) {
+    this(className);
+    this.propertyValues = propertyValues;
+  }
+
   public T getBean() {
     return bean;
   }
@@ -44,5 +52,13 @@ public class BeanDefinition<T> {
 
   public String getBeanClassName() {
     return beanClassName;
+  }
+
+  public PropertyValues getPropertyValues() {
+    return propertyValues;
+  }
+
+  public void setPropertyValues(PropertyValues propertyValues) {
+    this.propertyValues = propertyValues;
   }
 }
