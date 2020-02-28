@@ -4,10 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import personal.wxh.spring.AbstractBeanDefinitionReader;
-import personal.wxh.spring.BeanDefinition;
-import personal.wxh.spring.PropertyValue;
-import personal.wxh.spring.PropertyValues;
+import personal.wxh.spring.*;
 import personal.wxh.spring.io.ResourceLoader;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -32,6 +29,8 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
   private static final String FIELD_PROPERTY_KEY_NAME = "name";
   /** XML定义的property中的value属性名称 */
   private static final String FIELD_PROPERTY_VALUE_NAME = "value";
+  /** XML定义的property中的ref属性名称 */
+  private static final String FIELD_PROPERTY_REF_NAME = "ref";
 
   public XmlBeanDefinitionReader(ResourceLoader resourceLoader) {
     super(resourceLoader);
@@ -85,7 +84,21 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
         Element propertyEle = (Element) node;
         String name = propertyEle.getAttribute(FIELD_PROPERTY_KEY_NAME);
         String value = propertyEle.getAttribute(FIELD_PROPERTY_VALUE_NAME);
-        values.add(new PropertyValue(name, value));
+        if (value != null && value.length() > 0) {
+          values.add(new PropertyValue(name, value));
+        } else {
+          // 处理bean引用
+          String ref = propertyEle.getAttribute(FIELD_PROPERTY_REF_NAME);
+          if (ref == null || ref.length() == 0) {
+            // value和ref都没有值
+            throw new IllegalArgumentException(
+                "Configuration problem: <property> element for property '"
+                    + name
+                    + "' must specify a ref or value");
+          }
+          BeanReference beanRef = new BeanReference(ref);
+          values.add(new PropertyValue(name, beanRef));
+        }
       }
     }
     return new PropertyValues(values);

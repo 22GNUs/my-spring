@@ -3,4 +3,7 @@
     <bean name="xmlService" class="personal.wxh.spring.service.XmlAutowiredService">
         <property name="text" value="Im autowired by xml" />
     </bean>
+    <bean name="refService" class="personal.wxh.spring.service.RefAutowiredService">
+        <property name="xmlAutowiredService" ref="xmlService" />
+    </bean>
 </beans>

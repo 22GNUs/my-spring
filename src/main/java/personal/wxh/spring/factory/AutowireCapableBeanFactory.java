@@ -1,6 +1,7 @@
 package personal.wxh.spring.factory;
 
 import personal.wxh.spring.BeanDefinition;
+import personal.wxh.spring.BeanReference;
 import personal.wxh.spring.PropertyValue;
 import personal.wxh.spring.PropertyValues;
 import personal.wxh.spring.error.BeanCreationException;
@@ -41,8 +42,14 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     // 使用反射设置属性
     for (PropertyValue pv : pvs.getPropertyValues()) {
       final Field f = bean.getClass().getDeclaredField(pv.getName());
+      Object value = pv.getValue();
+      if (value instanceof BeanReference) {
+        // 如果是引用则通过getBean再次初始化对象
+        BeanReference ref = (BeanReference) value;
+        value = getBean(ref.getName());
+      }
       f.setAccessible(true);
-      f.set(bean, pv.getValue());
+      f.set(bean, value);
     }
   }
 }

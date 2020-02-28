@@ -5,10 +5,9 @@ import personal.wxh.spring.*;
 import personal.wxh.spring.io.ResourceLoader;
 import personal.wxh.spring.service.FieldAutowiredService;
 import personal.wxh.spring.service.HelloWorldService;
+import personal.wxh.spring.service.RefAutowiredService;
 import personal.wxh.spring.service.XmlAutowiredService;
 import personal.wxh.spring.xml.XmlBeanDefinitionReader;
-
-import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -59,6 +58,32 @@ public class BeanFactoryTest {
    */
   @Test
   public void testXmlReaderAutowired() throws Exception {
+    BeanFactory factory = loadFactoryFromXML();
+    // 读取Bean, 名字跟XMl中配置的一致
+    XmlAutowiredService service = factory.getBean("xmlService");
+    assertNotNull(service);
+    assertEquals(service.getText(), "Im autowired by xml");
+  }
+
+  /**
+   * 测试引用注入
+   *
+   * @throws Exception 抛出所有异常
+   */
+  @Test
+  public void testBeanRefAutowired() throws Exception {
+    BeanFactory factory = loadFactoryFromXML();
+    RefAutowiredService refService = factory.getBean("refService");
+    assertNotNull(refService);
+
+    XmlAutowiredService xmlServiceFromRef = refService.getXmlAutowiredService();
+    assertNotNull(xmlServiceFromRef);
+    XmlAutowiredService xmlFromFactory = factory.getBean("xmlService");
+    // 引用的bean应该等于注入的bean
+    assertEquals(xmlServiceFromRef, xmlFromFactory);
+  }
+
+  private BeanFactory loadFactoryFromXML() throws Exception {
     // 1. 读取配置文件并解析BeanDefinition缓存到reader
     BeanDefinitionReader reader = new XmlBeanDefinitionReader(new ResourceLoader());
     reader.loadBeanDefinition("test-application-context.xml");
@@ -68,10 +93,6 @@ public class BeanFactoryTest {
     for (var beanDefinition : reader.getRegistry().entrySet()) {
       factory.registerBeanDefinition(beanDefinition.getKey(), beanDefinition.getValue());
     }
-
-    // 3. 读取Bean, 名字跟XMl中配置的一致
-    XmlAutowiredService service = factory.getBean("xmlService");
-    assertNotNull(service);
-    assertEquals(service.getText(), "Im autowired by xml");
+    return factory;
   }
 }
