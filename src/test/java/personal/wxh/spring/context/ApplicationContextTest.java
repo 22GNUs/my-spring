@@ -1,10 +1,10 @@
 package personal.wxh.spring.context;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 import personal.wxh.spring.service.RefAutowiredService;
 import personal.wxh.spring.service.XmlAutowiredService;
-
-import static org.junit.Assert.*;
 
 /**
  * @author wangxinhua

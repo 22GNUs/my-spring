@@ -16,12 +16,13 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
   /**
    * 刷新容器
+   *
    * @throws Exception 抛出异常
    */
   public abstract void refresh() throws Exception;
 
   @Override
   public <T> T getBean(String name) {
-      return beanFactory.getBean(name);
+    return beanFactory.getBean(name);
   }
 }

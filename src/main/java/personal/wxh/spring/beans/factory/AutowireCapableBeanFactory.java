@@ -1,12 +1,11 @@
 package personal.wxh.spring.beans.factory;
 
+import java.lang.reflect.Field;
 import personal.wxh.spring.BeanDefinition;
 import personal.wxh.spring.BeanReference;
 import personal.wxh.spring.PropertyValue;
 import personal.wxh.spring.PropertyValues;
 import personal.wxh.spring.error.BeanCreationException;
-
-import java.lang.reflect.Field;
 
 /**
  * 有自动注入功能的BeanFactory

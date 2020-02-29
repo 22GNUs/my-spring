@@ -12,6 +12,7 @@ public interface BeanDefinitionReader {
 
   /**
    * 从指定位置加载BeanDefinition
+   *
    * @param location 位置地址
    * @throws Exception 抛出子类异常
    */
@@ -19,6 +20,7 @@ public interface BeanDefinitionReader {
 
   /**
    * 获取读取到的BeanDefinition数据
+   *
    * @return Map形式的BeanDefinition
    */
   Map<String, BeanDefinition<?>> getRegistry();

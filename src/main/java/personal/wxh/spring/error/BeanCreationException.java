@@ -2,6 +2,7 @@ package personal.wxh.spring.error;
 
 /**
  * 包装bean初始化异常为RuntimeException
+ *
  * @author wangxinhua
  * @since 1.0
  */

@@ -1,15 +1,12 @@
 package personal.wxh.spring.beans.factory;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 import personal.wxh.spring.*;
 import personal.wxh.spring.beans.io.ResourceLoader;
-import personal.wxh.spring.service.FieldAutowiredService;
-import personal.wxh.spring.service.HelloWorldService;
-import personal.wxh.spring.service.RefAutowiredService;
-import personal.wxh.spring.service.XmlAutowiredService;
 import personal.wxh.spring.beans.xml.XmlBeanDefinitionReader;
-
-import static org.junit.Assert.*;
+import personal.wxh.spring.service.*;
 
 /**
  * @author wangxinhua
@@ -17,29 +14,21 @@ import static org.junit.Assert.*;
  */
 public class BeanFactoryTest {
 
-  /**
-   * 测试基础的Factory创建方法
-   *
-   * @throws Exception 抛出所有异常
-   */
+  /** 测试基础的Factory创建方法 */
   @Test
-  public void testHelloWorld() throws Exception {
+  public void testHelloWorld() {
     final AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
     final String testName = "helloWorldService";
     beanFactory.registerBeanDefinition(
         testName,
-        new BeanDefinition<HelloWorldService>("personal.wxh.spring.service.HelloWorldService"));
+        new BeanDefinition<HelloWorldService>("personal.wxh.spring.service.HelloWorldServiceImpl"));
     final HelloWorldService service = beanFactory.getBean(testName);
-    assertEquals("hello world", service.getName());
+    assertEquals("hello world", service.helloWorld());
   }
 
-  /**
-   * 测试属性自动注入
-   *
-   * @throws Exception 抛出所有异常
-   */
+  /** 测试属性自动注入 */
   @Test
-  public void testFiledAutowired() throws Exception {
+  public void testFiledAutowired() {
     final AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
     final String testName = "fieldAutowiredService";
     final String textField = "Im autowired";

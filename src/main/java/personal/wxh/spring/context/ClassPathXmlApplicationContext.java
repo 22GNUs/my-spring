@@ -1,12 +1,11 @@
 package personal.wxh.spring.context;
 
+import java.util.Map;
 import personal.wxh.spring.BeanDefinition;
 import personal.wxh.spring.beans.factory.AbstractBeanFactory;
 import personal.wxh.spring.beans.factory.AutowireCapableBeanFactory;
 import personal.wxh.spring.beans.io.ResourceLoader;
 import personal.wxh.spring.beans.xml.XmlBeanDefinitionReader;
-
-import java.util.Map;
 
 /**
  * 基于XML的ApplicationContext实现

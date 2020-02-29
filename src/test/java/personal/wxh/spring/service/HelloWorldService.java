@@ -4,11 +4,7 @@ package personal.wxh.spring.service;
  * @author wangxinhua
  * @since 1.0
  */
-public class HelloWorldService {
+public interface HelloWorldService {
 
-  private final String name = "hello world";
-
-  public String getName() {
-    return name;
-  }
+  String helloWorld();
 }
