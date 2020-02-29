@@ -3,7 +3,7 @@ plugins {
     id "com.diffplug.gradle.spotless" version "3.27.1"
 }
 
-group 'org.example'
+group 'personal.wxh'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 11
@@ -21,4 +21,5 @@ spotless {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'aopalliance', name: 'aopalliance', version: '1.0'
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.9.5'
 }
