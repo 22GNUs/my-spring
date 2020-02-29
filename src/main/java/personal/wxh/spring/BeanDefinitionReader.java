@@ -15,7 +15,7 @@ public interface BeanDefinitionReader {
    * @param location 位置地址
    * @throws Exception 抛出子类异常
    */
-  void loadBeanDefinition(String location) throws Exception;
+  void loadBeanDefinitions(String location) throws Exception;
 
   /**
    * 获取读取到的BeanDefinition数据

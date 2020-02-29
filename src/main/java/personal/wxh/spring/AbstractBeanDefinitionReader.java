@@ -1,6 +1,6 @@
 package personal.wxh.spring;
 
-import personal.wxh.spring.io.ResourceLoader;
+import personal.wxh.spring.beans.io.ResourceLoader;
 
 import java.util.HashMap;
 import java.util.Map;

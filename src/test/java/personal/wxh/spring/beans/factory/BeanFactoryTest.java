@@ -1,13 +1,13 @@
-package personal.wxh.spring.factory;
+package personal.wxh.spring.beans.factory;
 
 import org.junit.Test;
 import personal.wxh.spring.*;
-import personal.wxh.spring.io.ResourceLoader;
+import personal.wxh.spring.beans.io.ResourceLoader;
 import personal.wxh.spring.service.FieldAutowiredService;
 import personal.wxh.spring.service.HelloWorldService;
 import personal.wxh.spring.service.RefAutowiredService;
 import personal.wxh.spring.service.XmlAutowiredService;
-import personal.wxh.spring.xml.XmlBeanDefinitionReader;
+import personal.wxh.spring.beans.xml.XmlBeanDefinitionReader;
 
 import static org.junit.Assert.*;
 
@@ -24,7 +24,7 @@ public class BeanFactoryTest {
    */
   @Test
   public void testHelloWorld() throws Exception {
-    final BeanFactory beanFactory = new AutowireCapableBeanFactory();
+    final AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
     final String testName = "helloWorldService";
     beanFactory.registerBeanDefinition(
         testName,
@@ -40,7 +40,7 @@ public class BeanFactoryTest {
    */
   @Test
   public void testFiledAutowired() throws Exception {
-    final BeanFactory beanFactory = new AutowireCapableBeanFactory();
+    final AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
     final String testName = "fieldAutowiredService";
     final String textField = "Im autowired";
     final PropertyValues pvs = new PropertyValues(new PropertyValue("text", textField));
@@ -86,10 +86,10 @@ public class BeanFactoryTest {
   private BeanFactory loadFactoryFromXML() throws Exception {
     // 1. 读取配置文件并解析BeanDefinition缓存到reader
     BeanDefinitionReader reader = new XmlBeanDefinitionReader(new ResourceLoader());
-    reader.loadBeanDefinition("test-application-context.xml");
+    reader.loadBeanDefinitions("test-application-context.xml");
 
     // 2. 初始化BeanFactory, 把reader中的BeanDefinition读取并初始化到BeanFactory
-    BeanFactory factory = new AutowireCapableBeanFactory();
+    AbstractBeanFactory factory = new AutowireCapableBeanFactory();
     for (var beanDefinition : reader.getRegistry().entrySet()) {
       factory.registerBeanDefinition(beanDefinition.getKey(), beanDefinition.getValue());
     }

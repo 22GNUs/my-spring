@@ -1,4 +1,4 @@
-package personal.wxh.spring.io;
+package personal.wxh.spring.beans.io;
 
 import java.io.IOException;
 import java.io.InputStream;

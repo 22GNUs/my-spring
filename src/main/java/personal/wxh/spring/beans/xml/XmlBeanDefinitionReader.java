@@ -1,11 +1,11 @@
-package personal.wxh.spring.xml;
+package personal.wxh.spring.beans.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import personal.wxh.spring.*;
-import personal.wxh.spring.io.ResourceLoader;
+import personal.wxh.spring.beans.io.ResourceLoader;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -37,7 +37,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
   }
 
   @Override
-  public void loadBeanDefinition(String location) throws Exception {
+  public void loadBeanDefinitions(String location) throws Exception {
     try (final InputStream is = getResourceLoader().getResource(location).getInputStream()) {
       // XML解析输入流
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

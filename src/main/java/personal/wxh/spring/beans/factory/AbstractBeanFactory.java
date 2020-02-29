@@ -1,4 +1,4 @@
-package personal.wxh.spring.factory;
+package personal.wxh.spring.beans.factory;
 
 import personal.wxh.spring.BeanDefinition;
 
@@ -19,22 +19,26 @@ public abstract class AbstractBeanFactory implements BeanFactory {
 
   @Override
   public <T> T getBean(String name) {
+    // 利用ConcurrentHashMap特性在getBean时lazy-init
     @SuppressWarnings("unchecked")
-    final T ret =
-        (T)
-            Optional.ofNullable(beanDefinitionMap.get(name))
-                .map(BeanDefinition::getBean)
-                .orElse(null);
-    return ret;
+    BeanDefinition<T> beanDefinition =
+        (BeanDefinition<T>)
+            beanDefinitionMap.computeIfPresent(
+                name,
+                (key, bd) -> {
+                  if (bd.getBean() == null) {
+                    doCreateBean(bd);
+                  }
+                  return bd;
+                });
+    if (beanDefinition == null) {
+      throw new IllegalArgumentException("No bean named " + name + " is defined");
+    }
+    return beanDefinition.getBean();
   }
 
-  @Override
   public <T> void registerBeanDefinition(String name, BeanDefinition<T> beanDefinition) {
-    final BeanDefinition<?> old = beanDefinitionMap.putIfAbsent(name, beanDefinition);
-    if (old == null) {
-      // old == null 说明是第一次放入, 执行初始化
-      beanDefinition.setBean(this.doCreateBean(beanDefinition));
-    }
+    beanDefinitionMap.putIfAbsent(name, beanDefinition);
   }
 
   /**

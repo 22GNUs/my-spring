@@ -1,4 +1,4 @@
-package personal.wxh.spring.factory;
+package personal.wxh.spring.beans.factory;
 
 import personal.wxh.spring.BeanDefinition;
 import personal.wxh.spring.BeanReference;
@@ -19,9 +19,13 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
   @Override
   protected <T> T doCreateBean(BeanDefinition<T> beanDefinition) {
     try {
+      if (beanDefinition.getBean() != null) {
+        return beanDefinition.getBean();
+      }
       // 创建实例, 并初始化注入属性
       final T bean = createInstance(beanDefinition);
       applyPropertyValues(bean, beanDefinition);
+      beanDefinition.setBean(bean);
       return bean;
     } catch (Exception e) {
       e.printStackTrace();
