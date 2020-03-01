@@ -3,13 +3,17 @@ My-Spring
 
 模仿Sring编写的Ioc容器
 
-执行流程
+演进流程
 -------
-
-`BeanFactoryTest` 中的每个单元测试代表项目演进过程
 
 1. 通过 `XmlBeanDefinitionReader` 读取XML中的Bean配置, 存储在内部的HashMap
 2. 把 `XmlBeanDefinitionReader` 中的 `BeanDefinition` 读取到 `BeanFactory`, 并初始化
+3. 在Bean初始化过程中读取XML中的属性配置用反射的形式设置到对象中
+4. 在XML中定义tag `ref` 与 `value` 的区别, 通过 `ref` 类型区别引用类型注入, 并以懒加载形式防止
+循环依赖(如果后期加入构造注入则无法避免)
+5. 引入 `ApplicationContext` 包装 `BeanFactory`, 管理声明周期
+6. 通过JDK动态代理, 在 `ApplicationContext` 中注册 `BeanPostProcessor`, 在类创建过程中拦截创建方法,
+使用动态代理包装原始对象, 包装范围由 `AspectJExpressionPointcutAdvisor` 这个配置类决定, 如果配置了该类, 则在 `AspectJAwareAdvisorAutoProxyCreator` (BeanPostProcessor的一个实现) 中进行代理
 
 ### 问题|笔记 (自问自答-_-)
 
