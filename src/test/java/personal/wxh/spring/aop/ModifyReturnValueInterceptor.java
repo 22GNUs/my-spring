@@ -14,7 +14,7 @@ public class ModifyReturnValueInterceptor implements MethodInterceptor {
   public Object invoke(MethodInvocation invocation) throws Throwable {
     Object proceed = invocation.proceed();
     if (proceed instanceof String) {
-      return proceed + "modified";
+      return proceed + "-modified";
     }
     return proceed;
   }

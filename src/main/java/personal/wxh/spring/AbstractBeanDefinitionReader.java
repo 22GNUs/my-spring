@@ -12,7 +12,7 @@ import personal.wxh.spring.beans.io.ResourceLoader;
  */
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader {
 
-  private final Map<String, BeanDefinition<?>> registry;
+  private final Map<String, BeanDefinition> registry;
   private final ResourceLoader resourceLoader;
 
   public AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
@@ -20,7 +20,7 @@ public abstract class AbstractBeanDefinitionReader implements BeanDefinitionRead
     this.resourceLoader = resourceLoader;
   }
 
-  public Map<String, BeanDefinition<?>> getRegistry() {
+  public Map<String, BeanDefinition> getRegistry() {
     return registry;
   }
 

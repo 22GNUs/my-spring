@@ -67,7 +67,7 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     String name = e.getAttribute(FIELD_NAME);
     String className = e.getAttribute(FIELD_CLASS_NAME);
     PropertyValues propertyValues = processPropertyValues(e);
-    BeanDefinition<?> beanDefinition = new BeanDefinition<>(className, propertyValues);
+    BeanDefinition beanDefinition = new BeanDefinition(className, propertyValues);
     getRegistry().put(name, beanDefinition);
   }
 

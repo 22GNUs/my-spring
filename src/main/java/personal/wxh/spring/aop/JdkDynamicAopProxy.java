@@ -11,29 +11,31 @@ import org.aopalliance.intercept.MethodInterceptor;
  * @author wangxinhua
  * @since 1.0
  */
-public class JdkDynamicAopProxy<T> implements AopProxy<T>, InvocationHandler {
+public class JdkDynamicAopProxy implements AopProxy, InvocationHandler {
 
-  /** 此处的泛型必须是一个接口, 才可以转换成功 */
-  private final AdvisedSupport<T> advised;
+  private final AdvisedSupport advised;
 
-  public JdkDynamicAopProxy(AdvisedSupport<T> advised) {
+  public JdkDynamicAopProxy(AdvisedSupport advised) {
     this.advised = advised;
   }
 
   @Override
   public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
     MethodInterceptor interceptor = advised.getMethodInterceptor();
-    return interceptor.invoke(
-        new ReflectiveMethodInvocation(advised.getTargetSource().getTarget(), method, args));
+    MethodMatcher methodMatcher = advised.getMethodMatcher();
+    if (methodMatcher != null
+        && methodMatcher.matches(method, advised.getTargetSource().getClass())) {
+      // proxy是代理对象自己, 此处执行应该调用被代理对象自己
+      return interceptor.invoke(
+          new ReflectiveMethodInvocation(advised.getTargetSource().getTarget(), method, args));
+    }
+    // 没有匹配表达式则不代理
+    return method.invoke(advised.getTargetSource().getTarget(), args);
   }
 
   @Override
-  @SuppressWarnings("unchecked")
-  public T getProxy() {
-    return (T)
-        Proxy.newProxyInstance(
-            getClass().getClassLoader(),
-            new Class[] {advised.getTargetSource().getTargetClass()},
-            this);
+  public Object getProxy() {
+    return Proxy.newProxyInstance(
+        getClass().getClassLoader(), advised.getTargetSource().getTargetClass(), this);
   }
 }

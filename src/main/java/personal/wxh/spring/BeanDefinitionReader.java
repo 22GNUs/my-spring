@@ -23,5 +23,5 @@ public interface BeanDefinitionReader {
    *
    * @return Map形式的BeanDefinition
    */
-  Map<String, BeanDefinition<?>> getRegistry();
+  Map<String, BeanDefinition> getRegistry();
 }

@@ -35,6 +35,19 @@ A: PointCut相对来说比较好理解, advice表示拦截的位置(方法前还
 
 Advisor就是把PointCut和Advice组合起来的一个单位
 
+**Q: 如何实现自动代理?**
+
+A:
+
+1. 在 `AbstractBeanFactory#getBean()` 进行懒加载时(逻辑应该是只要加载bean时)调用 `PostProcessor` 进行拦截
+
+2. 通过配置 `AspectJExpressionPointcutAdvisor` 并复写 `BeanPostProcessor` 的方法, 在方法返回时创建代理对象, 覆盖默认的返回对象
+
+**Q: 什么时候自动代理?**
+
+A: 在 `ApplicationContext` 中会注册 `BeanPostProcessor`, 直接调用 `BeanFactory` 时由于没有注册
+`BeanPostProcessor` 所以不会被代理
+
 TODO
 -----
 
@@ -43,3 +56,4 @@ TODO
 - [x] 处理bean依赖关系
 - [x] JDK动态代理
 - [x] AOP解析
+- [x] AOP自动代理

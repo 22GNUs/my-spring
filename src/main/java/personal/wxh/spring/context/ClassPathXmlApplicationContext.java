@@ -34,11 +34,11 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
   }
 
   @Override
-  public void refresh() throws Exception {
+  protected void loadBeanDefinitions() throws Exception {
     XmlBeanDefinitionReader xmlBeanDefinitionReader =
         new XmlBeanDefinitionReader(new ResourceLoader());
     xmlBeanDefinitionReader.loadBeanDefinitions(cfgLocation);
-    for (Map.Entry<String, BeanDefinition<?>> beanDefinitionEntry :
+    for (Map.Entry<String, BeanDefinition> beanDefinitionEntry :
         xmlBeanDefinitionReader.getRegistry().entrySet()) {
       beanFactory.registerBeanDefinition(
           beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());

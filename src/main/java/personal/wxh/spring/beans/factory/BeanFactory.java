@@ -11,8 +11,7 @@ public interface BeanFactory {
    *
    * @param name bean名称
    * @return bean对象
-   * @param <T> 泛型类型
    * @throws ClassCastException 泛型强制转换失败
    */
-  <T> T getBean(String name);
+  Object getBean(String name);
 }

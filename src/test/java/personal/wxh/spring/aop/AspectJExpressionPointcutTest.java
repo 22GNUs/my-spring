@@ -1,10 +1,10 @@
 package personal.wxh.spring.aop;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import personal.wxh.spring.service.HelloWorldService;
 import personal.wxh.spring.service.HelloWorldServiceImpl;
-
-import static org.junit.Assert.assertTrue;
 
 /**
  * @author wangxinhua

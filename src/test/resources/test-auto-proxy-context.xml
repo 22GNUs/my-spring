@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean name="returnService" class="personal.wxh.spring.service.ReturnStringServiceImpl" />
+    <bean name="modifyReturnValueInterceptor" class="personal.wxh.spring.aop.ModifyReturnValueInterceptor" />
+    <bean name="returnAspect" class="personal.wxh.spring.aop.AspectJExpressionPointcutAdvisor">
+        <property name="advice" ref="modifyReturnValueInterceptor" />
+        <!-- 拦截所有service方法, 打印调用时间 -->
+        <property name="expression" value="execution(* personal.wxh.spring.service.ReturnStringService.*(..))" />
+    </bean>
+    <!-- 通过注入该类实现自动创建AOP代理 -->
+    <bean name="autoProxyCreator" class="personal.wxh.spring.aop.AspectJAwareAdvisorAutoProxyCreator" />
+</beans>

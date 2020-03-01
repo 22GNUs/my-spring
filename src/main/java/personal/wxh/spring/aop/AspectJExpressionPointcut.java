@@ -16,9 +16,9 @@ import org.aspectj.weaver.tools.ShadowMatch;
  */
 public class AspectJExpressionPointcut implements PointCut, ClassFilter, MethodMatcher {
 
-  private final String expression;
+  private String expression;
 
-  private final PointcutExpression pointcutExpression;
+  private PointcutExpression pointcutExpression;
 
   private PointcutParser pointcutParser;
 
@@ -37,6 +37,11 @@ public class AspectJExpressionPointcut implements PointCut, ClassFilter, MethodM
     DEFAULT_SUPPORTED_PRIMITIVES.add(PointcutPrimitive.AT_TARGET);
   }
 
+  public AspectJExpressionPointcut() {
+    // TODO 加final, XML支持构造注入
+    this(null);
+  }
+
   public AspectJExpressionPointcut(String expression) {
     this(expression, DEFAULT_SUPPORTED_PRIMITIVES);
   }
@@ -47,8 +52,6 @@ public class AspectJExpressionPointcut implements PointCut, ClassFilter, MethodM
         PointcutParser
             .getPointcutParserSupportingSpecifiedPrimitivesAndUsingContextClassloaderForResolution(
                 supportedPrimitives);
-    // 根据表达式否建匹配对象
-    this.pointcutExpression = buildPointcutExpression();
   }
 
   private PointcutExpression buildPointcutExpression() {
@@ -67,12 +70,14 @@ public class AspectJExpressionPointcut implements PointCut, ClassFilter, MethodM
 
   @Override
   public boolean matches(Class<?> targetClass) {
+    checkReadyToMatch();
     // 调用是否匹配
     return pointcutExpression.couldMatchJoinPointsInType(targetClass);
   }
 
   @Override
   public boolean matches(Method method, Class<?> targetClass) {
+    checkReadyToMatch();
     ShadowMatch shadowMatch = pointcutExpression.matchesMethodExecution(method);
     if (shadowMatch.alwaysMatches()) {
       return true;
@@ -80,5 +85,15 @@ public class AspectJExpressionPointcut implements PointCut, ClassFilter, MethodM
       return false;
     }
     return false;
+  }
+
+  public void setExpression(String expression) {
+    this.expression = expression;
+  }
+
+  private void checkReadyToMatch() {
+    if (pointcutExpression == null) {
+      this.pointcutExpression = buildPointcutExpression();
+    }
   }
 }

@@ -1,12 +1,19 @@
 package personal.wxh.spring.beans.factory;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
-import personal.wxh.spring.*;
+import personal.wxh.spring.BeanDefinition;
+import personal.wxh.spring.BeanDefinitionReader;
+import personal.wxh.spring.PropertyValue;
+import personal.wxh.spring.PropertyValues;
 import personal.wxh.spring.beans.io.ResourceLoader;
 import personal.wxh.spring.beans.xml.XmlBeanDefinitionReader;
-import personal.wxh.spring.service.*;
+import personal.wxh.spring.service.FieldAutowiredService;
+import personal.wxh.spring.service.HelloWorldService;
+import personal.wxh.spring.service.RefAutowiredService;
+import personal.wxh.spring.service.XmlAutowiredService;
 
 /**
  * @author wangxinhua
@@ -20,9 +27,8 @@ public class BeanFactoryTest {
     final AbstractBeanFactory beanFactory = new AutowireCapableBeanFactory();
     final String testName = "helloWorldService";
     beanFactory.registerBeanDefinition(
-        testName,
-        new BeanDefinition<HelloWorldService>("personal.wxh.spring.service.HelloWorldServiceImpl"));
-    final HelloWorldService service = beanFactory.getBean(testName);
+        testName, new BeanDefinition("personal.wxh.spring.service.HelloWorldServiceImpl"));
+    final HelloWorldService service = (HelloWorldService) beanFactory.getBean(testName);
     assertEquals("hello world", service.helloWorld());
   }
 
@@ -34,8 +40,8 @@ public class BeanFactoryTest {
     final String textField = "Im autowired";
     final PropertyValues pvs = new PropertyValues(new PropertyValue("text", textField));
     beanFactory.registerBeanDefinition(
-        testName, new BeanDefinition<>("personal.wxh.spring.service.FieldAutowiredService", pvs));
-    final FieldAutowiredService s = beanFactory.getBean(testName);
+        testName, new BeanDefinition("personal.wxh.spring.service.FieldAutowiredService", pvs));
+    final FieldAutowiredService s = (FieldAutowiredService) beanFactory.getBean(testName);
     assertNotNull(s);
     assertEquals(textField, s.getText());
   }
@@ -49,7 +55,7 @@ public class BeanFactoryTest {
   public void testXmlReaderAutowired() throws Exception {
     BeanFactory factory = loadFactoryFromXML();
     // 读取Bean, 名字跟XMl中配置的一致
-    XmlAutowiredService service = factory.getBean("xmlService");
+    XmlAutowiredService service = (XmlAutowiredService) factory.getBean("xmlService");
     assertNotNull(service);
     assertEquals(service.getText(), "Im autowired by xml");
   }
@@ -62,12 +68,12 @@ public class BeanFactoryTest {
   @Test
   public void testBeanRefAutowired() throws Exception {
     BeanFactory factory = loadFactoryFromXML();
-    RefAutowiredService refService = factory.getBean("refService");
+    RefAutowiredService refService = (RefAutowiredService) factory.getBean("refService");
     assertNotNull(refService);
 
     XmlAutowiredService xmlServiceFromRef = refService.getXmlAutowiredService();
     assertNotNull(xmlServiceFromRef);
-    XmlAutowiredService xmlFromFactory = factory.getBean("xmlService");
+    XmlAutowiredService xmlFromFactory = (XmlAutowiredService) factory.getBean("xmlService");
     // 引用的bean应该等于注入的bean
     assertEquals(xmlServiceFromRef, xmlFromFactory);
   }

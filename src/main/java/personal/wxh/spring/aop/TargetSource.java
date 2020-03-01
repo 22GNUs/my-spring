@@ -6,21 +6,21 @@ package personal.wxh.spring.aop;
  * @author wangxinhua
  * @since 1.0
  */
-public class TargetSource<T> {
+public class TargetSource {
 
-  private final Class<T> targetClass;
-  private final T target;
+  private final Class<?>[] targetClass;
+  private final Object target;
 
-  public TargetSource(Class<T> targetClass, T target) {
+  public TargetSource(Object target, Class<?>... targetClass) {
     this.targetClass = targetClass;
     this.target = target;
   }
 
-  public Class<T> getTargetClass() {
+  public Class<?>[] getTargetClass() {
     return targetClass;
   }
 
-  public T getTarget() {
+  public Object getTarget() {
     return target;
   }
 }

@@ -1,12 +1,12 @@
 package personal.wxh.spring.aop;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 import personal.wxh.spring.context.ApplicationContext;
 import personal.wxh.spring.context.ClassPathXmlApplicationContext;
 import personal.wxh.spring.service.HelloWorldService;
-import personal.wxh.spring.service.HelloWorldServiceImpl;
 
 /**
  * @author wangxinhua
@@ -17,16 +17,18 @@ public class JdkDynamicAopProxyTest {
   @Test
   public void testInterceptor() throws Exception {
     ApplicationContext context = new ClassPathXmlApplicationContext("test-application-context.xml");
-    HelloWorldServiceImpl service = context.getBean("helloWorldService");
+    HelloWorldService service = (HelloWorldService) context.getBean("helloWorldService");
 
-    AdvisedSupport<HelloWorldService> advisedSupport =
-        new AdvisedSupport<>(
-            new TargetSource<>(HelloWorldService.class, service),
-            new ModifyReturnValueInterceptor());
+    AdvisedSupport advisedSupport =
+        new AdvisedSupport(
+            new TargetSource(service, HelloWorldService.class),
+            new ModifyReturnValueInterceptor(),
+            new AspectJExpressionPointcut(
+                "execution(* personal.wxh.spring.service.HelloWorldService.*(..))"));
 
-    AopProxy<HelloWorldService> proxy = new JdkDynamicAopProxy<>(advisedSupport);
-    HelloWorldService proxyService = proxy.getProxy();
+    AopProxy proxy = new JdkDynamicAopProxy(advisedSupport);
+    HelloWorldService proxyService = (HelloWorldService) proxy.getProxy();
     assertNotEquals(service, proxyService);
-    assertEquals(service.helloWorld() + "modified", proxyService.helloWorld());
+    assertEquals(service.helloWorld() + "-modified", proxyService.helloWorld());
   }
 }

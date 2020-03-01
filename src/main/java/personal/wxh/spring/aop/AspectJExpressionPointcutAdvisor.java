@@ -10,12 +10,15 @@ import org.aopalliance.aop.Advice;
  */
 public class AspectJExpressionPointcutAdvisor implements PointCutAdvisor {
 
-  private final PointCut pointCut;
-  private final Advice advice;
+  private AspectJExpressionPointcut pointCut = new AspectJExpressionPointcut();
+  private Advice advice;
 
-  public AspectJExpressionPointcutAdvisor(String expression, Advice advice) {
-    this.pointCut = new AspectJExpressionPointcut(expression);
+  public void setAdvice(Advice advice) {
     this.advice = advice;
+  }
+
+  public void setExpression(String expression) {
+    this.pointCut.setExpression(expression);
   }
 
   @Override
